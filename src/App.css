@@ -1,0 +1,16 @@
+#root {
+    height: calc(100vh);
+}
+
+.ant-tabs-left >.ant-tabs-nav .ant-tabs-tab {
+    padding: 4px 8px;
+}
+
+.ant-tabs-left >.ant-tabs-content-holder >.ant-tabs-content>.ant-tabs-tabpane {
+    padding-left: 0;
+}
+
+
+:root {
+    --dn-brand-color: rgba(24, 144, 255, 1);
+}
