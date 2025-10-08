@@ -11,15 +11,25 @@ const WidgetCollapse = () => {
     const padWidgets =
       remainder === 0
         ? widgets || []
-        : (widgets || []).concat(Array(paddingCount).fill({ type: '', icon: '', name: '' }));
+        : (widgets || []).concat([
+            {
+              type: '',
+              icon: <></>,
+              name: '',
+              style: {
+                gridColumnStart: `span ${paddingCount}`
+              }
+            }
+          ]);
 
     return (
-      <div className="gap-[1px] grid grid-cols-3 bg-[#d9d9d9] cursor-grab ">
+      <div className="gap-[1px] grid grid-cols-3 bg-[#d9d9d9]">
         {padWidgets.map((item) => {
           return (
             <div
               key={item.type}
-              className="flex-col flex items-center justify-center bg-white p-1 text-gray-600 hover:text-blue-400 hover:shadow-[0_0_10px_rgba(0,0,0,0.1)]"
+              style={item.style}
+              className={`flex-col ${item.name ? 'cursor-grab hover:text-blue-400 hover:shadow-[0_0_10px_rgba(0,0,0,0.1)]' : ''} flex items-center justify-center bg-white p-1 text-gray-600 `}
             >
               <div className="pb-2 pt-2">{item.icon}</div>
               <div className="text-[12px] ">{item.name}</div>
