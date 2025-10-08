@@ -2,7 +2,7 @@ import { Tabs } from 'antd';
 import { Blocks, ListTree, History } from 'lucide-react';
 import { useState } from 'react';
 import WidgetCollapse from '../widgets';
-import './widget-container.css';
+import './widget-container.less';
 
 const WidgetContainer = () => {
   const [activeKey, setActiveKey] = useState('blocks');
@@ -27,7 +27,7 @@ const WidgetContainer = () => {
   return (
     <div className="widget-container">
       <Tabs
-        className={'h-full w-[300px]'}
+        className={'h-full'}
         onChange={(key) => {
           setActiveKey(key);
         }}
