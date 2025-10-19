@@ -1,9 +1,8 @@
 import { useState, type DragEvent, useEffect } from 'react';
 import emitter from '../events/emitter.ts';
 import type { WidgetItem } from '../widgets/widget-items.tsx';
-import type { InputProps } from 'antd';
 import { ProForm } from '@ant-design/pro-components';
-import { widgets } from '../widgets/widgets.ts';
+import WidgetWrapper from '../widgets/widget-wrapper.tsx';
 
 interface ComponentInstance extends WidgetItem {
   id: string;
@@ -21,7 +20,6 @@ const SketchContainer = () => {
 
     if (e.dataTransfer) {
       const item = JSON.parse(e.dataTransfer.getData('component')) as WidgetItem;
-      console.log(item);
 
       // 创建组件实例
       const componentInstance: ComponentInstance = {
@@ -63,18 +61,6 @@ const SketchContainer = () => {
     }
   };
 
-  // 处理组件之间的拖拽放置
-  const handleComponentDragOver = (e: DragEvent, index: number) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setDropIndex(index);
-  };
-
-  const handleComponentDragLeave = (e: DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-  };
-
   const emitListener = (item: WidgetItem) => {
     console.log(item);
   };
@@ -90,15 +76,13 @@ const SketchContainer = () => {
 
   // 渲染组件的函数
   const renderComponent = (component: ComponentInstance, index: number) => {
-    const Component = widgets[component.type] || (() => <div>未知组件类型: {component.type}</div>);
     return (
-      <div
-        className={`relative pt-2 border-t border-blue-500 mb-1 ${dropIndex === index ? 'border-blue-500' : 'border-transparent'}`}
-        onDragOver={(e) => handleComponentDragOver(e, index)}
-        onDragLeave={handleComponentDragLeave}
-      >
-        <Component {...(component.props as InputProps)} />
-      </div>
+      <WidgetWrapper
+        setDropIndex={setDropIndex}
+        component={component}
+        index={index}
+        dropIndex={dropIndex}
+      />
     );
   };
 
@@ -108,30 +92,32 @@ const SketchContainer = () => {
       onDragOver={onDragOver}
       onDragEnter={onDragEnter}
       onDragLeave={onDragLeave}
-      className={`flex-1 bg-gray-100 p-4 border-2 border-dashed ${isDragOver ? 'border-blue-500' : 'border-transparent'} `}
+      className={`flex-1 overflow-y-auto bg-white p-4 border-2 border-dashed ${isDragOver ? 'border-blue-500' : 'border-transparent'} `}
     >
-      <ProForm>
-        <div
-          className="min-h-[200px]"
-          onDragOver={(e) => {
-            e.preventDefault();
-            e.stopPropagation();
-            // 当在容器末尾拖拽时，设置插入位置为末尾
-            setDropIndex(components.length);
-          }}
-        >
-          {components.map((component, index) => (
-            <div key={component.id} className="mb-2">
-              {renderComponent(component, index)}
-            </div>
-          ))}
-          {/* 当dropIndex指向末尾时显示插入指示器 */}
-          {dropIndex === components.length && components.length > 0 && (
-            <div className="h-0.5 bg-blue-500 rounded-full mb-1"></div>
-          )}
+      {components.length > 0 && (
+        <ProForm className="">
+          <div
+            className="min-h-[200px]"
+            onDragOver={(e) => {
+              e.preventDefault();
+              e.stopPropagation();
+              // 当在容器末尾拖拽时，设置插入位置为末尾
+              setDropIndex(components.length);
+            }}
+          >
+            {components.map((component, index) => renderComponent(component, index))}
+            {/* 当dropIndex指向末尾时显示插入指示器 */}
+            {dropIndex === components.length && components.length > 0 && (
+              <div className="h-0.5 bg-blue-500 rounded-full mb-1"></div>
+            )}
+          </div>
+        </ProForm>
+      )}
+      {components.length === 0 && (
+        <div className="h-full flex items-center justify-center text-gray-400 border border-dashed text-center">
+          拖拽组件到这里
         </div>
-      </ProForm>
-      {components.length === 0 && <div className="text-gray-400">拖拽位置</div>}
+      )}
     </div>
   );
 };
