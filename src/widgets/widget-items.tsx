@@ -32,7 +32,12 @@ import {
 import WidgetIcon from './widget-icon.tsx';
 import type { CSSProperties, ReactElement } from 'react';
 
-export type WidgetItem = { name: string; type: string; icon: ReactElement; style?: CSSProperties };
+export type WidgetItem = {
+  name: string;
+  type: string;
+  icon: ReactElement;
+  style?: CSSProperties;
+};
 
 export type WidgetGroupItem = {
   key: string;

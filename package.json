@@ -27,6 +27,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@ant-design/pro-components": "^2.8.10",
     "antd": "^5.27.4",
     "commander": "^14.0.1",
     "eventemitter3": "^5.0.1",
