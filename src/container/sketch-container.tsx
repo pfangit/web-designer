@@ -2,12 +2,8 @@ import { useState, type DragEvent, useEffect } from 'react';
 import emitter from '../events/emitter.ts';
 import type { WidgetItem } from '../widgets/widget-items.tsx';
 import { ProForm } from '@ant-design/pro-components';
-import WidgetWrapper from '../widgets/widget-wrapper.tsx';
-
-interface ComponentInstance extends WidgetItem {
-  id: string;
-  props?: Record<string, any>;
-}
+import WidgetWrapper, { type ComponentInstance } from '../widgets/widget-wrapper.tsx';
+import { nanoid } from 'nanoid';
 
 const SketchContainer = () => {
   const [isDragOver, setIsDragOver] = useState(false);
@@ -22,9 +18,11 @@ const SketchContainer = () => {
       const item = JSON.parse(e.dataTransfer.getData('component')) as WidgetItem;
 
       // 创建组件实例
+      const id = nanoid(10);
       const componentInstance: ComponentInstance = {
         ...item,
-        id: `${item.type}-${Date.now()}`
+        id: id,
+        key: id
       };
 
       // 如果有插入位置，则在该位置插入组件，否则添加到末尾
@@ -78,6 +76,7 @@ const SketchContainer = () => {
   const renderComponent = (component: ComponentInstance, index: number) => {
     return (
       <WidgetWrapper
+        key={component.id}
         setDropIndex={setDropIndex}
         component={component}
         index={index}

@@ -6,8 +6,11 @@ import type { InputProps } from 'antd';
 import { cn } from '../util/cn.ts';
 import emitter from '../events/emitter.ts';
 
-interface ComponentInstance extends WidgetItem {
+export interface ComponentInstance extends WidgetItem {
+  // widget的id
   id: string;
+  // widget的key值，用于form表单使用
+  key: string;
   props?: Record<string, any>;
 }
 
@@ -59,7 +62,7 @@ const WidgetWrapper = ({
       onBlur={() => setIsFocused(false)}
       tabIndex={0}
     >
-      <ProForm.Item>
+      <ProForm.Item {...component.props}>
         <Component {...(component.props as InputProps)} />
       </ProForm.Item>
     </div>

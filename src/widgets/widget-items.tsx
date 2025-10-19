@@ -31,12 +31,14 @@ import {
 } from '../icons';
 import WidgetIcon from './widget-icon.tsx';
 import type { CSSProperties, ReactElement } from 'react';
+import type { FormItemProps } from 'antd';
 
 export type WidgetItem = {
   name: string;
   type: string;
   icon: ReactElement;
   style?: CSSProperties;
+  props?: FormItemProps;
 };
 
 export type WidgetGroupItem = {
@@ -53,7 +55,10 @@ export const widgetItems: WidgetGroupItem[] = [
       {
         type: 'input',
         name: '输入框',
-        icon: <WidgetIcon src={InputSource} />
+        icon: <WidgetIcon src={InputSource} />,
+        props: {
+          label: '输入框'
+        }
       },
       {
         type: 'textarea',
