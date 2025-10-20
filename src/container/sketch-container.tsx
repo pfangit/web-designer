@@ -107,7 +107,7 @@ const SketchContainer = () => {
             {components.map((component, index) => renderComponent(component, index))}
             {/* 当dropIndex指向末尾时显示插入指示器 */}
             {dropIndex === components.length && components.length > 0 && (
-              <div className="h-0.5 bg-blue-500 rounded-full mb-1"></div>
+              <div className="h-[1px] bg-blue-500 rounded-full mb-1"></div>
             )}
           </div>
         </ProForm>
